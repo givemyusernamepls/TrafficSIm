@@ -9,7 +9,7 @@ class Simulation:
             setattr(self, attr, val)
 
     def set_default_config(self):
-        self.t = 0.0
+        self.t = 0.0 #sabotage
         self.frame_count = 0
         self.dt = 1/60
         self.roads = []
