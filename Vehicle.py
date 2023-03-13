@@ -47,7 +47,7 @@ class Vehicle:
                     continue
                 else:
                     for car in self.sim.roads[i].vehicles[self.sim.roads[i].edges.index(t)]:
-                        if self.sim.roads[i].length[self.sim.roads[i].edges.index(t)] - car.x <= self.sim.roads[i].speed_lim * 2.5:
+                        if self.sim.roads[i].length[self.sim.roads[i].edges.index(t)] - car.x <= self.sim.roads[i].speed_lim * 2.7:
                             self.a = -self.b_max * self.v / self.v_max[self.current_edge_index] - 1.337
 
 
