@@ -20,5 +20,14 @@ sim.roads[0].vehicles[0].append(
 sim.roads[1].vehicles[0].append(
  Vehicle(J, sim, {"path": strecken_H, "v_max": [H_speed_lim, H_speed_lim]})
 )
+sim.roads[1].vehicles[0].append(
+ Vehicle(J, sim, {"path": strecken_H, "v_max": [H_speed_lim, H_speed_lim]})
+)
+sim.roads[1].vehicles[0].append(
+ Vehicle(J, sim, {"path": strecken_H, "v_max": [H_speed_lim, H_speed_lim]})
+)
+sim.roads[1].vehicles[0].append(
+ Vehicle(J, sim, {"path": strecken_H, "v_max": [H_speed_lim, H_speed_lim]})
+)
 win = Window(sim)
 win.run(steps_per_update = 3)
