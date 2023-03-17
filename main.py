@@ -17,6 +17,15 @@ sim.create_road(ort, strecken_K, K_speed_lim, 1)
 sim.roads[0].vehicles[0].append(
   Vehicle(I, sim, {"path": [strecken_G[0]] + [strecken_H[1]], "v_max": [G_speed_lim, H_speed_lim]})
  )
+sim.roads[0].vehicles[0].append(
+  Vehicle(I, sim, {"path": [strecken_G[0]] + [strecken_H[1]], "v_max": [G_speed_lim, H_speed_lim]})
+ )
+sim.roads[0].vehicles[0].append(
+  Vehicle(I, sim, {"path": [strecken_G[0]] + [strecken_H[1]], "v_max": [G_speed_lim, H_speed_lim]})
+ )
+sim.roads[0].vehicles[0].append(
+  Vehicle(I, sim, {"path": [strecken_G[0]] + [strecken_H[1]], "v_max": [G_speed_lim, H_speed_lim]})
+ )
 sim.roads[1].vehicles[0].append(
  Vehicle(I, sim, {"path": strecken_H[:2], "v_max": [H_speed_lim, H_speed_lim]})
 )
@@ -28,4 +37,4 @@ sim.roads[1].vehicles[3].append(
 )
 win = Window(sim)
 
-win.run(steps_per_update = 3)
+win.run(steps_per_update=1)

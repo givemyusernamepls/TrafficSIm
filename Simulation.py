@@ -9,7 +9,7 @@ class Simulation:
             setattr(self, attr, val)
 
     def set_default_config(self):
-        self.t = 0.0 #sabotage
+        self.t = 0.0
         self.frame_count = 0
         self.dt = 1/60
         self.roads = []
@@ -52,8 +52,8 @@ class Simulation:
 
                     self.roads[i].vehicles[j].popleft()
 
-            self.t += self.dt
-            self.frame_count += 1
+        self.t += self.dt
+        self.frame_count += 1
 
     def run(self, steps):
         for _ in range(steps):
