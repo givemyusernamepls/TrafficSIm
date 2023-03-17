@@ -39,15 +39,16 @@ class Vehicle:
     def vorfahrt(self):
         for t in self.graph.in_edges(nbunch = self.path[self.current_edge_index][1], data = 'weight'):
             for i in range(len(self.sim.roads)):
-                if self.sim.roads[self.current_road_index].prio <= self.sim.roads[i].prio:
+                if self.path[self.current_edge_index] in self.sim.roads[i].edges:
+                    k = i
+            for i in self.sim.roads:
+                if self.sim.roads[k].prio <= i.prio:
                     continue
                 elif t == self.path[self.current_edge_index]:
                     continue
-                elif t not in self.sim.roads[i].edges:
-                    continue
-                else:
-                    for car in self.sim.roads[i].vehicles[self.sim.roads[i].edges.index(t)]:
-                        if self.sim.roads[i].length[self.sim.roads[i].edges.index(t)] - car.x <= self.sim.roads[i].speed_lim * 2:
+                elif t in i.edges:
+                    for car in i.vehicles[i.edges.index(t)]:
+                        if i.length[i.edges.index(t)] - car.x <= i.speed_lim * 2:
                             self.a = -self.b_max * self.v / self.v_max[self.current_edge_index]
 
 
