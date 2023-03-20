@@ -1,5 +1,7 @@
 class TrafficSignal:
-    def __init__(self, roads, config={}):
+    def __init__(self, num, sim, roads, config={}):
+        self.num = num
+        self.sim = sim
         self.roads = roads
         self.set_default_config()
         for attr, val in config.items():
@@ -17,9 +19,10 @@ class TrafficSignal:
         self.last_t = 0
 
     def init_properties(self):
-        for i in range(len(self.roads)):
-            for road in self.roads[i]:
-                road.set_traffic_signal(self, i)
+        for i in self.sim.roads:
+            for j in self.roads:
+                if j in i.edges:
+                    i.set_traffic_signal(self, j, self.num)
 
     @property
     def current_cycle(self):

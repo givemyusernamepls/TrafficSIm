@@ -29,17 +29,21 @@ class Road:
 
         self.has_traffic_signal = [False for i in range(len(self.edges))]
 
-    def set_traffic_signal(self, signal, group):
+    def set_traffic_signal(self, signal, edge, group):
         self.traffic_signal = signal
+        self.edge = edge
         self.traffic_signal_group = group
-        self.has_traffic_signal = True
+        for i in self.edges:
+            if self.edge == i:
+                self.has_traffic_signal[self.edges.index(i)] = True
 
     @property
     def traffic_signal_state(self):
-        if self.has_traffic_signal:
-            i = self.traffic_signal_group
-            return self.traffic_signal.current_cycle[i]
-        return True
+        for i in range(len(self.edges)):
+            if self.has_traffic_signal[i]:
+                j = self.traffic_signal_group
+                return self.traffic_signal.current_cycle[j]
+            return True
 
     def update(self, dt):
         for i in range(len(self.edges)):
