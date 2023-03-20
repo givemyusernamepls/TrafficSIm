@@ -1,1 +1,0 @@
-[G_speed_lim fo in range(len(strecken_G))] + [h_speed_lim, H_speed_lim]

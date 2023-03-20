@@ -1,8 +1,10 @@
-from Road import Road
+from Road import *
+from Ampel import *
 from copy import deepcopy
 
 class Simulation:
-    def __init__(self, config={}):
+    def __init__(self,graph, config={}):
+        self.graph = graph
         self.set_default_config()
 
         for attr, val in config.items():
@@ -24,9 +26,19 @@ class Simulation:
         for road in road_list:
             self.create_road(*road)
 
+    def create_signal(self, nodes, config={}):
+        for i in nodes:
+            roads = [self.graph.in_edges(nbunch = i, data = 'Weight')]
+            sig = TrafficSignal(roads, config)
+            self.traffic_signals.append(sig)
+            return sig
+
     def update(self):
         for road in self.roads:
             road.update(self.dt)
+
+        for signal in self.traffic_signals:
+            signal.update(self)
 
         for i in range(len(self.roads)):
             for j in range(len(self.roads[i].edges)):
