@@ -287,17 +287,19 @@ class Window:
             for i in range(len(signal.roads)):
                 color = (0, 255, 0) if signal.current_cycle[i] else (255, 0, 0)
                 for road in signal.roads[i]:
-                    a = 0
-                    position = (
-                        (1 - a) * road.end[0] + a * road.start[0],
-                        (1 - a) * road.end[1] + a * road.start[1]
-                    )
-                    self.rotated_box(
-                        position,
-                        (1, 3),
-                        cos=road.angle_cos, sin=road.angle_sin,
-                        color=color
-                    )
+                    for j in self.sim.roads:
+                        if road in j.edges:
+                            a = 0
+                            position = (
+                                (1 - a) * j.nodes_x[road[1]] + a * j.nodes_y[road[0]],
+                                (1 - a) * j.nodes_x[road[1]] + a * j.nodes_y[road[0]]
+                            )
+                            self.rotated_box(
+                                position,
+                                (1, 3),
+                                cos=j.angle_cos[j.edges.index(road)], sin=j.angle_sin[j.edges.index(road)],
+                                color=color
+                            )
 
     def draw_status(self):
         text_fps = self.text_font.render(f't={self.sim.t:.5}', False, (0, 0, 0))

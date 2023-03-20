@@ -35,7 +35,8 @@ class Road:
         self.traffic_signal_group = group
         for i in self.edges:
             if self.edge == i:
-                self.has_traffic_signal[self.edges.index(i)] = True
+                self.has_traffic_signal[self.edges.index(i)] = Tru
+        print(self.has_traffic_signal)
 
     @property
     def traffic_signal_state(self):

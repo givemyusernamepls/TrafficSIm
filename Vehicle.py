@@ -49,7 +49,7 @@ class Vehicle:
                 elif t in i.edges:
                     for car in i.vehicles[i.edges.index(t)]:
                         if i.length[i.edges.index(t)] - car.x <= i.speed_lim * 2:
-                            self.a = -self.b_max * self.v / self.v_max[self.current_edge_index]
+                            self.a = -self.b_max * self.v / self._v_max
 
 
     def update(self, lead, dt):
@@ -67,13 +67,13 @@ class Vehicle:
 
             alpha = (self.s0 + max(0, self.T * self.v + delta_v * self.v / self.sqrt_ab)) / delta_x
 
-        self.a = self.a_max * (1 - (self.v / self.v_max[self.current_edge_index]) ** 4 - alpha ** 2)
+        self.a = self.a_max * (1 - (self.v / self._v_max) ** 4 - alpha ** 2)
 
         if self.kreuzung:
             self.vorfahrt()
 
         if self.stopped:
-            self.a = -self.b_max * self.v / self.v_max[self.current_edge_index]
+            self.a = -self.b_max * self.v / self._v_max
 
     def stop(self):
         self.stopped = True

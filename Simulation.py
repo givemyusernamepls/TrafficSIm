@@ -26,12 +26,12 @@ class Simulation:
         for road in road_list:
             self.create_road(*road)
 
-    def create_signal(self, nodes, sim, config={}):
+    def create_signal(self, nodes, config={}):
         num = 0
         for i in nodes:
             num += 1
             roads = [self.graph.in_edges(nbunch = i, data = 'Weight')]
-            sig = TrafficSignal(num, sim, roads, config)
+            sig = TrafficSignal(num, self, roads, config)
             self.traffic_signals.append(sig)
             return sig
 
