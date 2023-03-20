@@ -27,24 +27,28 @@ class Road:
         self.angle_sin = [((self.nodes_y[t[1]] - self.nodes_y[t[0]]) / (t[2] * self.speed_lim)) for t in self.edges]
         self.angle_cos = [((self.nodes_x[t[1]] - self.nodes_x[t[0]]) / (t[2] * self.speed_lim)) for t in self.edges]
 
+        self.traffic_signal_group = [None for i in range(len(self.edges))]
         self.has_traffic_signal = [False for i in range(len(self.edges))]
+        self.traffic_signal = [None for i in range(len(self.edges))]
 
     def set_traffic_signal(self, signal, edge, group):
-        self.traffic_signal = signal
         self.edge = edge
-        self.traffic_signal_group = group
         for i in self.edges:
             if self.edge == i:
-                self.has_traffic_signal[self.edges.index(i)] = Tru
+                self.traffic_signal[self.edges.index(i)] = signal
+                self.has_traffic_signal[self.edges.index(i)] = True
+                self.traffic_signal_group[self.edges.index(i)] = group
         print(self.has_traffic_signal)
-
+        print(self.traffic_signal_group)
+        print(self.traffic_signal)
     @property
     def traffic_signal_state(self):
         for i in range(len(self.edges)):
             if self.has_traffic_signal[i]:
-                j = self.traffic_signal_group
-                return self.traffic_signal.current_cycle[j]
-            return True
+                if self.traffic_signal_group[i] is not None:
+                    j = self.traffic_signal_group[i]
+                    return self.traffic_signal[i].current_cycle[j]
+        return True
 
     def update(self, dt):
         for i in range(len(self.edges)):
@@ -60,7 +64,8 @@ class Road:
                     for vehicle in self.vehicles[i]:
                         vehicle.unslow()
                 else:
-                    if self.vehicles[i][0].x >= self.length[i] - self.traffic_signal.slow_distance:
-                        self.vehicles[i][0].slow(self.traffic_signal.slow_factor * self.vehicles[i][0]._v_max)
-                    if self.vehicles[i][0].x >= self.length[i] - self.traffic_signal.stop_distance and self.vehicles[i][0].x <= self.length[i] - self.traffic_signal.stop_distance / 2:
-                        self.vehicles[i][0].stop()
+                    if not self.traffic_signal[i] == None:
+                        if self.vehicles[i][0].x >= self.length[i] - self.traffic_signal[i].slow_distance:
+                            self.vehicles[i][0].slow(self.traffic_signal[i].slow_factor * self.vehicles[i][0]._v_max)
+                        if self.vehicles[i][0].x >= self.length[i] - self.traffic_signal[i].stop_distance and self.vehicles[i][0].x <= self.length[i] - self.traffic_signal[i].stop_distance / 2:
+                            self.vehicles[i][0].stop()

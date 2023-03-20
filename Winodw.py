@@ -240,7 +240,7 @@ class Window:
                     (road.edges[i][2] * road.speed_lim, 3.7),
                     cos=road.angle_cos[i],
                     sin=road.angle_sin[i],
-                    color=(201, 201, 201),
+                    color=(255, 0, 0, 0),
                     centered=False
                 )
 
@@ -284,25 +284,25 @@ class Window:
 
     def draw_signals(self):
         for signal in self.sim.traffic_signals:
-            for i in range(len(signal.roads)):
-                color = (0, 255, 0) if signal.current_cycle[i] else (255, 0, 0)
-                for road in signal.roads[i]:
+            for i in signal.num:
+                color = (255, 0, 0) if signal.current_cycle[i] else (0, 255, 0)
+                for road in signal.roads:
                     for j in self.sim.roads:
                         if road in j.edges:
-                            a = 0
+                            a = 0.025
                             position = (
-                                (1 - a) * j.nodes_x[road[1]] + a * j.nodes_y[road[0]],
-                                (1 - a) * j.nodes_x[road[1]] + a * j.nodes_y[road[0]]
+                                (1 - a) * j.nodes_x[road[1]] + a * j.nodes_x[road[0]],
+                                (1 - a) * j.nodes_y[road[1]] + a * j.nodes_y[road[0]]
                             )
                             self.rotated_box(
                                 position,
-                                (1, 3),
+                                (0.5, 3),
                                 cos=j.angle_cos[j.edges.index(road)], sin=j.angle_sin[j.edges.index(road)],
                                 color=color
                             )
 
     def draw_status(self):
-        text_fps = self.text_font.render(f't={self.sim.t:.5}', False, (0, 0, 0))
+        text_fps = self.text_font.render(f't={self.sim.t:.3}', False, (0, 0, 0))
         text_frc = self.text_font.render(f'n={self.sim.frame_count}', False, (0, 0, 0))
 
         self.screen.blit(text_fps, (0, 0))

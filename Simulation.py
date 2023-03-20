@@ -27,13 +27,13 @@ class Simulation:
             self.create_road(*road)
 
     def create_signal(self, nodes, config={}):
-        num = 0
         for i in nodes:
-            num += 1
-            roads = [self.graph.in_edges(nbunch = i, data = 'Weight')]
+            roads = [e for e in self.graph.in_edges(nbunch = i, data = 'weight')]
+            num = np.resize([0, 1], len(roads))
+            print(roads)
+            print(num)
             sig = TrafficSignal(num, self, roads, config)
             self.traffic_signals.append(sig)
-            return sig
 
     def update(self):
         for road in self.roads:

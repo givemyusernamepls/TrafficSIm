@@ -10,9 +10,9 @@ class TrafficSignal:
 
     def set_default_config(self):
         self.cycle = [(False, True), (True, False)]
-        self.slow_distance = 50
-        self.slow_factor = 0.5
-        self.stop_distance = 15
+        self.slow_distance = 80
+        self.slow_factor = 0.4
+        self.stop_distance = 30
 
         self.current_cycle_index = 0
 
@@ -22,7 +22,7 @@ class TrafficSignal:
         for i in self.sim.roads:
             for j in self.roads:
                 if j in i.edges:
-                    i.set_traffic_signal(self, j, self.num)
+                    i.set_traffic_signal(self, j, self.num[self.roads.index(j)])
 
     @property
     def current_cycle(self):
