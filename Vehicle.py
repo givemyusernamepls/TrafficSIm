@@ -71,6 +71,7 @@ class Vehicle:
 
         if self.stopped:
             self.a = -self.b_max * self.v / self._v_max - 0.1337
+            self.kreuzung = False
 
         if self.kreuzung:
             self.vorfahrt()
