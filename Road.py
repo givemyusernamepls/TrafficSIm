@@ -41,13 +41,12 @@ class Road:
         print(self.has_traffic_signal)
         print(self.traffic_signal_group)
         print(self.traffic_signal)
-    @property
-    def traffic_signal_state(self):
-        for i in range(len(self.edges)):
-            if self.has_traffic_signal[i]:
-                if self.traffic_signal_group[i] is not None:
-                    j = self.traffic_signal_group[i]
-                    return self.traffic_signal[i].current_cycle[j]
+
+    def traffic_signal_state(self, num):
+        if self.has_traffic_signal[num]:
+            if self.traffic_signal_group[num] is not None:
+                j = self.traffic_signal_group[num]
+                return self.traffic_signal[num].current_cycle[j]
         return True
 
     def update(self, dt):
@@ -59,7 +58,7 @@ class Road:
                     lead = self.vehicles[i][j - 1]
                     self.vehicles[i][j].update(lead, dt)
 
-                if self.traffic_signal_state:
+                if self.traffic_signal_state(i):
                     self.vehicles[i][0].unstop()
                     for vehicle in self.vehicles[i]:
                         vehicle.unslow()
