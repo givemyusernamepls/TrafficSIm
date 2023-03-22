@@ -17,7 +17,7 @@ sim.create_road(ort, strecken_H, H_speed_lim, 0)
 sim.create_road(ort, strecken_G, G_speed_lim, 1)
 sim.create_road(ort, strecken_K, K_speed_lim, 1)
 
-sim.create_signal([2, 3])
+sim.create_signal([2])
 
 sim.roads[1].vehicles[0].append(
   Vehicle(I, sim, {"path": [strecken_G[0]] + [strecken_H[2]], "v_max": [G_speed_lim, H_speed_lim]})
