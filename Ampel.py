@@ -29,6 +29,6 @@ class TrafficSignal:
         return self.cycle[self.current_cycle_index]
 
     def update(self, sim):
-        cycle_length = 30
+        cycle_length = 20
         k = (sim.t // cycle_length) % 2
         self.current_cycle_index = int(k)

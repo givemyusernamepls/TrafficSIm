@@ -48,7 +48,7 @@ class Vehicle:
                     continue
                 elif t in i.edges:
                     for car in i.vehicles[i.edges.index(t)]:
-                        if i.length[i.edges.index(t)] - car.x <= i.speed_lim * 2:
+                        if i.length[i.edges.index(t)] - car.x <= car.v * 2:
                             self.a = -self.b_max * self.v / self._v_max - 0.1337
 
 
@@ -71,16 +71,17 @@ class Vehicle:
 
         if self.stopped:
             self.a = -self.b_max * self.v / self._v_max - 0.1337
-            self.kreuzung = False
 
         if self.kreuzung:
             self.vorfahrt()
 
     def stop(self):
         self.stopped = True
+        self.kreuzung = False
 
     def unstop(self):
         self.stopped = False
+        self.kreuzung = True
 
     def slow(self, v):
         self.v_max = v

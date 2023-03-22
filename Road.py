@@ -38,9 +38,6 @@ class Road:
                 self.traffic_signal[self.edges.index(i)] = signal
                 self.has_traffic_signal[self.edges.index(i)] = True
                 self.traffic_signal_group[self.edges.index(i)] = group
-        print(self.has_traffic_signal)
-        print(self.traffic_signal_group)
-        print(self.traffic_signal)
 
     def traffic_signal_state(self, num):
         if self.has_traffic_signal[num]:
@@ -58,12 +55,13 @@ class Road:
                     lead = self.vehicles[i][j - 1]
                     self.vehicles[i][j].update(lead, dt)
 
-                if self.traffic_signal_state(i):
-                    self.vehicles[i][0].unstop()
-                    for vehicle in self.vehicles[i]:
-                        vehicle.unslow()
-                else:
-                    if not self.traffic_signal[i] == None:
+                if not self.traffic_signal[i] == None:
+
+                    if self.traffic_signal_state(i):
+                        self.vehicles[i][0].unstop()
+                        for vehicle in self.vehicles[i]:
+                            vehicle.unslow()
+                    else:
                         if self.vehicles[i][0].x >= self.length[i] - self.traffic_signal[i].slow_distance:
                             self.vehicles[i][0].slow(self.traffic_signal[i].slow_factor * self.vehicles[i][0]._v_max)
                         if self.vehicles[i][0].x >= self.length[i] - self.traffic_signal[i].stop_distance and self.vehicles[i][0].x <= self.length[i] - self.traffic_signal[i].stop_distance / 2:

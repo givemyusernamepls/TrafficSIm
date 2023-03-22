@@ -1,5 +1,6 @@
 from Road import *
 from Ampel import *
+from operator import attrgetter
 from copy import deepcopy
 
 class Simulation:
@@ -29,9 +30,19 @@ class Simulation:
     def create_signal(self, nodes, config={}):
         for i in nodes:
             roads = [e for e in self.graph.in_edges(nbunch = i, data = 'weight')]
-            num = np.resize([0, 1], len(roads))
-            print(roads)
-            print(num)
+            num = []
+            prio = []
+            for j in range(len(roads)):
+                for k in range(len(self.roads)):
+                    if roads[j] in self.roads[k].edges:
+                        prio.append(self.roads[k].prio)
+            for j in range(len(roads)):
+                for k in range(len(self.roads)):
+                    if roads[j] in self.roads[k].edges:
+                        if prio[j] % 2 == min(prio) % 2:
+                            num.append(1)
+                        else:
+                            num.append(0)
             sig = TrafficSignal(num, self, roads, config)
             self.traffic_signals.append(sig)
 
@@ -46,7 +57,7 @@ class Simulation:
             for j in range(len(self.roads[i].edges)):
                 if len(self.roads[i].vehicles[j]) == 0: continue
                 vehicle = self.roads[i].vehicles[j][0]
-                if self.roads[i].length[j] - vehicle.x <= self.roads[i].speed_lim * 2:
+                if self.roads[i].length[j] - vehicle.x <= vehicle.v * 2:
                     vehicle.kreuzung = True
                 if vehicle.x >= self.roads[i].length[j]:
                     vehicle.current_road_index += i
@@ -58,12 +69,13 @@ class Simulation:
                         continue
                     elif vehicle.path[vehicle.current_edge_index] in self.roads[i].edges:
                         self.roads[vehicle.current_road_index].vehicles[self.roads[i].edges.index(vehicle.path[vehicle.current_edge_index])].append(new_vehicle)
+                        new_vehicle.unstop()
                     else:
                         for k in range(len(self.roads)):
                             if vehicle.path[vehicle.current_edge_index] in self.roads[k].edges:
                                 vehicle.current_road_index = k
                                 self.roads[vehicle.current_road_index].vehicles[self.roads[k].edges.index(vehicle.path[vehicle.current_edge_index])].append(new_vehicle)
-
+                                new_vehicle.unstop()
                     self.roads[i].vehicles[j].popleft()
 
         self.t += self.dt
