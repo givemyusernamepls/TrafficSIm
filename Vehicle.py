@@ -42,10 +42,19 @@ class Vehicle:
                 if self.path[self.current_edge_index] in self.sim.roads[i].edges:
                     k = i
             for i in self.sim.roads:
-                if self.sim.roads[k].prio <= i.prio:
+                if self.sim.roads[k].prio < i.prio:
                     continue
                 elif t == self.path[self.current_edge_index]:
                     continue
+                elif self.sim.roads[k].prio == i.prio:
+                    if t in i.edges:
+                        if not (t[0], t[1]) == (self.path[self.current_edge_index + 1][1], self.path[self.current_edge_index + 1][0]):
+                            if i.edges.index(t) < i.edges.index(i.edges[self.current_edge_index]):
+                                continue
+                            else:
+                                for car in i.vehicles[i.edges.index(t)]:
+                                    if i.length[i.edges.index(t)] - car.x <= car.v * 2:
+                                        self.a = -self.b_max * self.v / self._v_max - 0.1337
                 elif t in i.edges:
                     for car in i.vehicles[i.edges.index(t)]:
                         if i.length[i.edges.index(t)] - car.x <= car.v * 2:

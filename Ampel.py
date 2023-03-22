@@ -8,21 +8,29 @@ class TrafficSignal:
             setattr(self, attr, val)
         self.init_properties()
 
-    def set_default_config(self):
-        self.cycle = [(False, True), (True, False)]
-        self.slow_distance = 80
-        self.slow_factor = 0.4
-        self.stop_distance = 30
-
-        self.current_cycle_index = 0
-
-        self.last_t = 0
-
     def init_properties(self):
         for i in self.sim.roads:
             for j in self.roads:
                 if j in i.edges:
                     i.set_traffic_signal(self, j, self.num[self.roads.index(j)])
+
+        self.slow_distance = []
+        self.stop_distance = []
+
+        for i in self.roads:
+            for t in self.sim.roads:
+                if i in t.edges:
+                    self.slow_distance.append(5 * t.speed_lim)
+                    self.stop_distance.append(2.2 * t.speed_lim)
+
+
+    def set_default_config(self):
+        self.cycle = [(False, True), (True, False)]
+        self.slow_factor = 0.4
+
+        self.current_cycle_index = 0
+
+        self.last_t = 0
 
     @property
     def current_cycle(self):

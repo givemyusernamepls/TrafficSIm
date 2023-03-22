@@ -39,7 +39,7 @@ class Simulation:
             for j in range(len(roads)):
                 for k in range(len(self.roads)):
                     if roads[j] in self.roads[k].edges:
-                        if prio[j] % 2 == min(prio) % 2:
+                        if prio[j] == min(prio):
                             num.append(1)
                         else:
                             num.append(0)
