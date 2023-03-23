@@ -79,7 +79,7 @@ class Vehicle:
         self.a = self.a_max * (1 - (self.v / self._v_max) ** 4 - alpha ** 2)
 
         if self.stopped:
-            self.a = -self.b_max * self.v / self._v_max - 0.1337
+            self.a = -self.b_max * self.v / self._v_max - 0.1
 
         if self.kreuzung:
             self.vorfahrt()
@@ -93,7 +93,9 @@ class Vehicle:
         self.kreuzung = True
 
     def slow(self, v):
-        self.v_max = v
+        self._v_max = v
+        self.kreuzung = False
 
     def unslow(self):
-        self.v_max = self._v_max
+        self._v_max = self.v_max[self.current_edge_index]
+        self.kreuzung = True

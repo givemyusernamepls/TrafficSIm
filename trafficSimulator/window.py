@@ -234,27 +234,17 @@ class Window:
 
     def draw_roads(self):
         for road in self.sim.roads:
-            # Draw road background
-            # self.rotated_box(
-            #     road.start,
-            #     (road.length, 3.7),
-            #     cos=road.angle_cos,
-            #     sin=road.angle_sin,
-            #     color=(180, 180, 220),
-            #     centered=False
-            # )
-            # Draw road lines
-            self.rotated_box(
-                road.start,
-                (road.length, 0.25),
-                cos=road.angle_cos,
-                sin=road.angle_sin,
-                color=(0, 0, 0),
-                centered=False
-            )
+             # Draw road background
+             self.rotated_box(
+                 road.start,
+                 (road.length, 3.7),
+                 cos=road.angle_cos,
+                 sin=road.angle_sin,
+                 color=(180, 180, 220),
+                 centered=False
+             )
 
-            # Draw road arrow
-            if road.length > 5: 
+             if road.length > 5:
                 for i in np.arange(-0.5*road.length, 0.5*road.length, 10):
                     pos = (
                         road.start[0] + (road.length/2 + i + 3) * road.angle_cos,

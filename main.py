@@ -20,29 +20,44 @@ sim.create_road(ort, strecken_K, K_speed_lim, 1)
 sim.create_signal([2])
 
 sim.roads[1].vehicles[0].append(
-  Vehicle(I, sim, {"path": [strecken_G[0]] + [strecken_H[2]], "v_max": [G_speed_lim, H_speed_lim]})
- )
-sim.roads[1].vehicles[0].append(
   Vehicle(I, sim, {"path": [strecken_G[0]] + [strecken_H[1]], "v_max": [G_speed_lim, H_speed_lim]})
  )
-sim.roads[1].vehicles[0].append(
-  Vehicle(I, sim, {"path": [strecken_G[0]] + [strecken_H[2]], "v_max": [G_speed_lim, H_speed_lim]})
- )
-sim.roads[1].vehicles[0].append(
-  Vehicle(I, sim, {"path": [strecken_G[0]] + [strecken_H[1]], "v_max": [G_speed_lim, H_speed_lim]})
- )
-sim.roads[0].vehicles[0].append(
- Vehicle(I, sim, {"path": strecken_H[:2], "v_max": [H_speed_lim, H_speed_lim]})
+sim.roads[0].vehicles[3].append(
+ Vehicle(I, sim, {"path": [strecken_H[3], strecken_H[2]], "v_max": [H_speed_lim, H_speed_lim]})
 )
 sim.roads[2].vehicles[0].append(
- Vehicle(I, sim, {"path": strecken_K + [strecken_H[2]], "v_max": [K_speed_lim, H_speed_lim]})
+ Vehicle(I, sim, {"path": [strecken_K[0]] + [strecken_H[2]], "v_max": [K_speed_lim, H_speed_lim]})
 )
 sim.roads[0].vehicles[3].append(
  Vehicle(I, sim, {"path": [strecken_H[3], strecken_H[2]], "v_max": [H_speed_lim, H_speed_lim]})
 )
 sim.roads[2].vehicles[0].append(
- Vehicle(I, sim, {"path": strecken_K + [strecken_H[2]], "v_max": [K_speed_lim, H_speed_lim]})
+ Vehicle(I, sim, {"path": [strecken_K[0]] + [strecken_H[2]], "v_max": [K_speed_lim, H_speed_lim]})
+)
+sim.roads[0].vehicles[3].append(
+ Vehicle(I, sim, {"path": [strecken_H[3], strecken_H[2]], "v_max": [H_speed_lim, H_speed_lim]})
+)
+sim.roads[2].vehicles[0].append(
+ Vehicle(I, sim, {"path": [strecken_K[0]] + [strecken_H[2]], "v_max": [K_speed_lim, H_speed_lim]})
+)
+sim.roads[1].vehicles[0].append(
+  Vehicle(I, sim, {"path": [strecken_G[0]] + [strecken_H[1]], "v_max": [G_speed_lim, H_speed_lim]})
+ )
+sim.roads[0].vehicles[3].append(
+ Vehicle(I, sim, {"path": [strecken_H[3], strecken_H[2]], "v_max": [H_speed_lim, H_speed_lim]})
+)
+sim.roads[2].vehicles[0].append(
+ Vehicle(I, sim, {"path": [strecken_K[0]] + [strecken_H[2]], "v_max": [K_speed_lim, H_speed_lim]})
+)
+sim.roads[0].vehicles[3].append(
+ Vehicle(I, sim, {"path": [strecken_H[3], strecken_H[2]], "v_max": [H_speed_lim, H_speed_lim]})
+)
+sim.roads[2].vehicles[0].append(
+ Vehicle(I, sim, {"path": [strecken_K[0]] + [strecken_H[2]], "v_max": [K_speed_lim, H_speed_lim]})
+)
+sim.roads[0].vehicles[3].append(
+ Vehicle(I, sim, {"path": [strecken_H[3], strecken_H[2]], "v_max": [H_speed_lim, H_speed_lim]})
 )
 win = Window(sim)
 
-win.run(steps_per_update=2)
+win.run(steps_per_update=5)

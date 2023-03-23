@@ -288,10 +288,9 @@ class Window:
                     color = (0, 255, 0) if signal.current_cycle[signal.num[signal.roads.index(road)]] else (255, 0, 0)
                     for j in self.sim.roads:
                         if road in j.edges:
-                            a = 0.025
                             position = (
-                                (1 - a) * j.nodes_x[road[1]] + a * j.nodes_x[road[0]],
-                                (1 - a) * j.nodes_y[road[1]] + a * j.nodes_y[road[0]]
+                                j.nodes_x[road[1]] + np.sign(j.nodes_x[road[0]]) * 2.5,
+                                j.nodes_y[road[1]] + np.sign(j.nodes_y[road[0]]) * 2.5
                             )
                             self.rotated_box(
                                 position,

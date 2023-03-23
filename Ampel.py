@@ -20,8 +20,8 @@ class TrafficSignal:
         for i in self.roads:
             for t in self.sim.roads:
                 if i in t.edges:
-                    self.slow_distance.append(5 * t.speed_lim)
-                    self.stop_distance.append(2.2 * t.speed_lim)
+                    self.slow_distance.append(3 * t.speed_lim)
+                    self.stop_distance.append(0.87 * t.speed_lim)
 
 
     def set_default_config(self):

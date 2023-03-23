@@ -70,12 +70,14 @@ class Simulation:
                     elif vehicle.path[vehicle.current_edge_index] in self.roads[i].edges:
                         self.roads[vehicle.current_road_index].vehicles[self.roads[i].edges.index(vehicle.path[vehicle.current_edge_index])].append(new_vehicle)
                         new_vehicle.unstop()
+                        new_vehicle.unslow()
                     else:
                         for k in range(len(self.roads)):
                             if vehicle.path[vehicle.current_edge_index] in self.roads[k].edges:
                                 vehicle.current_road_index = k
                                 self.roads[vehicle.current_road_index].vehicles[self.roads[k].edges.index(vehicle.path[vehicle.current_edge_index])].append(new_vehicle)
                                 new_vehicle.unstop()
+                                new_vehicle.unslow()
                     self.roads[i].vehicles[j].popleft()
 
         self.t += self.dt
