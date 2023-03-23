@@ -1,5 +1,6 @@
 from Road import *
 from Ampel import *
+from Generateur import *
 from operator import attrgetter
 from copy import deepcopy
 
@@ -46,12 +47,19 @@ class Simulation:
             sig = TrafficSignal(num, self, roads, config)
             self.traffic_signals.append(sig)
 
+    def create_gen(self, graph, startpoints, endpoints, config={}):
+        gen = VehicleGenerator(graph, self, startpoints, endpoints, config)
+        self.generators.append(gen)
+
     def update(self):
         for road in self.roads:
             road.update(self.dt)
 
         for signal in self.traffic_signals:
             signal.update(self)
+
+        for gen in self.generators:
+            gen.update()
 
         for i in range(len(self.roads)):
             for j in range(len(self.roads[i].edges)):

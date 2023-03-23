@@ -6,7 +6,7 @@ H = nx.MultiDiGraph()
 K = nx.MultiDiGraph()
 G_speed_lim = 13.8889
 H_speed_lim = 13.8889
-K_speed_lim = 28.8889
+K_speed_lim = 13.8889
 ort = {1:(-100, 0), 2:(0, 0), 3:(0, -100), 4:(0, 100), 5:(100, 0)}
 strecken_G = [(1, 2, (distance.euclidean(ort[1], ort[2])/G_speed_lim)), (2, 1, (distance.euclidean(ort[2], ort[1])/G_speed_lim))]
 strecken_H = [(3, 2, (distance.euclidean(ort[3], ort[2])/H_speed_lim)), (2, 4, (distance.euclidean(ort[2], ort[4])/H_speed_lim)), (2, 3, (distance.euclidean(ort[2], ort[3])/H_speed_lim)), (4, 2, (distance.euclidean(ort[4], ort[2])/H_speed_lim))]
@@ -20,3 +20,6 @@ nx.set_node_attributes(K, ort, "pos")
 J = nx.compose(G, H)
 I = nx.compose(J, K)
 strecken_I = strecken_G + strecken_H + strecken_K
+
+starts = [1, 3, 4, 5]
+ends = starts

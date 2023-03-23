@@ -1,8 +1,6 @@
 import pygame
 from pygame import gfxdraw
 import numpy as np
-from scipy.spatial import distance
-from Simulation import Simulation
 
 class Window:
     def __init__(self, sim, config={}):
