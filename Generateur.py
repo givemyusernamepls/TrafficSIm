@@ -4,11 +4,12 @@ from Vehicle import Auto
 from numpy.random import randint
 
 class VehicleGenerator:
-    def __init__(self, graph, sim, startpoints, endpoints, config={}):
+    def __init__(self, graph, sim, startpoints, endpoints, max_car, config={}):
         self.graph = graph
         self.sim = sim
         self.starts = startpoints
         self.ends = endpoints
+        self.max_car = max_car
 
         self.set_default_config()
 
@@ -20,6 +21,7 @@ class VehicleGenerator:
     def set_default_config(self):
         self.vehicle_rate = 20
         self.last_added_time = 0
+        self.vehicle_num = 1
 
     def init_properties(self):
         self.upcoming_vehicle = self.generate_vehicle()
@@ -56,7 +58,10 @@ class VehicleGenerator:
                     road = self.sim.roads[i].edges.index(self.upcoming_vehicle.path[0])
                     if len(self.sim.roads[i].vehicles[road]) == 0 or self.sim.roads[i].vehicles[road][-1].x > self.upcoming_vehicle.s0 + self.upcoming_vehicle.l:
                         self.upcoming_vehicle.time_added = self.sim.t
-                        self.sim.roads[i].vehicles[road].append(self.upcoming_vehicle)
+                        if self.max_car == None:
+                            self.sim.roads[i].vehicles[road].append(self.upcoming_vehicle)
+                        elif self.vehicle_num <= self.max_car:
+                            self.sim.roads[i].vehicles[road].append(self.upcoming_vehicle)
+                            self.vehicle_num += 1
                         self.last_added_time = self.sim.t
                     self.upcoming_vehicle = self.generate_vehicle()
-

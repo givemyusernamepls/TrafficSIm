@@ -59,7 +59,7 @@ class Auto:
                             self.a = -self.b_max * self.v / self._v_max - 0.1337
 
 
-    def update(self, lead, dt):
+    def update(self, lead, leadnext, len, dt):
         if self.v + self.a * dt < 0:
             self.x -= 1 / 2 * self.v * self.v / self.a
             self.v = 0
@@ -74,10 +74,16 @@ class Auto:
 
             alpha = (self.s0 + max(0, self.T * self.v + delta_v * self.v / self.sqrt_ab)) / delta_x
 
+        if leadnext:
+            delta_x = leadnext.x + len - self.x - leadnext.l
+            delta_v = self.v - leadnext.v
+
+            alpha = (self.s0 + max(0, self.T * self.v + delta_v * self.v / self.sqrt_ab)) / delta_x
+
         self.a = self.a_max * (1 - (self.v / self._v_max) ** 4 - alpha ** 2)
 
         if self.stopped:
-            self.a = -self.b_max * self.v / self._v_max - 0.1
+            self.a = -self.b_max * self.v / self._v_max - 0.1337
 
         if self.kreuzung:
             self.vorfahrt()

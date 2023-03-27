@@ -272,6 +272,7 @@ class Window:
                 else:
                     color_1 = (128, 28, 28)
 
+
                 self.rotated_box((x, y), (l, h), cos=cos, sin=sin, centered=True, color=color_1)
 
     def draw_vehicles(self):
