@@ -21,7 +21,8 @@ class Simulation:
         self.generators = []
         self.traffic_signals = []
         self.stop_per_sec = []
-        self.stopped = 0
+        self.stop_time = 0
+        self.vehicle_count = 0
 
     def create_road(self, nodes, edges, speed_lim, prio):
         road = Road(nodes, edges, speed_lim, prio)
@@ -69,6 +70,7 @@ class Simulation:
         for i in range(len(self.roads)):
             for j in range(len(self.roads[i].edges)):
                 for auto in self.roads[i].vehicles[j]:
+
                     if auto.v == 0:
                         stopped += 1
                 if len(self.roads[i].vehicles[j]) == 0:
@@ -96,6 +98,7 @@ class Simulation:
                     new_vehicle.x = 0
                     if vehicle.current_edge_index == len(vehicle.path):
                         self.roads[i].vehicles[self.roads[i].edges.index(vehicle.path[vehicle.current_edge_index - 1])].popleft()
+                        self.vehicle_count += 1
                         continue
                     elif vehicle.path[vehicle.current_edge_index] in self.roads[i].edges:
                         self.roads[vehicle.current_road_index].vehicles[self.roads[i].edges.index(vehicle.path[vehicle.current_edge_index])].append(new_vehicle)
@@ -110,17 +113,22 @@ class Simulation:
                                 new_vehicle.unslow()
                     self.roads[i].vehicles[j].popleft()
 
-        if self.t >= 10:
-            if vehicles == 0:
-                print(self.t)
-                print(self.stop_per_sec)
-                ABBRUCH()
+        if self.t >= self.stop_time and self.stop_time != 0:
+            print(self.vehicle_count)
+            print(self.stop_per_sec)
+            ABBRUCH()
 
-            else:
-                self.stop_per_sec.append(stopped)
-                self.stopped = 0
-                self.t += self.dt
-                self.frame_count += 1
+        #if self.t >= 10:
+        #    if vehicles == 0:
+        #        print(self.t)
+        #        print(self.stop_per_sec)
+        #        ABBRUCH()
+
+        #    else:
+        #        self.stop_per_sec.append(stopped)
+        #        self.stopped = 0
+        #        self.t += self.dt
+        #        self.frame_count += 1
 
         else:
             self.stop_per_sec.append(stopped)

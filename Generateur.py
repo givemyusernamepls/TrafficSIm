@@ -37,13 +37,13 @@ class VehicleGenerator:
             for k in self.graph.out_edges(nbunch = pfad[i], data = 'weight'):
                 if k[1] == pfad[i + 1]:
                     path.append(k)
-        j = random.uniform(-1, 1)
+        j = random.uniform(-0.2, 0.2)
+        l = random.choice([3, 4, 4, 4, 4, 5, 5, 5, 6, 8])
+        t = random.uniform(0.8, 1.2)
         for i in path:
             for k in self.sim.roads:
                 if i in k.edges:
-                    v_max.append(k.speed_lim + j)
-        l = random.choice([3, 4, 4, 4, 4, 5, 5, 5, 6, 8])
-        t = random.uniform(0.9, 1.1)
+                    v_max.append(k.speed_lim + k.speed_lim * j)
         if l >= 6:
             a = random.uniform(2, 3)
         else:
@@ -60,6 +60,7 @@ class VehicleGenerator:
                         self.upcoming_vehicle.time_added = self.sim.t
                         if self.max_car == None:
                             self.sim.roads[i].vehicles[road].append(self.upcoming_vehicle)
+                            self.vehicle_num += 1
                         elif self.vehicle_num <= self.max_car:
                             self.sim.roads[i].vehicles[road].append(self.upcoming_vehicle)
                             self.vehicle_num += 1
