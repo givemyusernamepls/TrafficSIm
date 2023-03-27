@@ -1,8 +1,6 @@
 import numpy as np
-from Road import Road
-from Simulation import *
 
-class Vehicle:
+class Auto:
     def __init__(self, graph, sim, config={}):
 
         self.graph = graph
@@ -99,3 +97,4 @@ class Vehicle:
     def unslow(self):
         self._v_max = self.v_max[self.current_edge_index]
         self.kreuzung = True
+

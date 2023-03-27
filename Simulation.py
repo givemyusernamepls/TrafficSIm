@@ -1,3 +1,5 @@
+import copy
+
 from Road import *
 from Ampel import *
 from Generateur import *
@@ -70,7 +72,7 @@ class Simulation:
                 if vehicle.x >= self.roads[i].length[j]:
                     vehicle.current_road_index += i
                     vehicle.current_edge_index = vehicle.path.index(self.roads[i].edges[j]) + 1
-                    new_vehicle = deepcopy(vehicle)
+                    new_vehicle = copy.copy(vehicle)
                     new_vehicle.x = 0
                     if vehicle.current_edge_index == len(vehicle.path):
                         self.roads[i].vehicles[self.roads[i].edges.index(vehicle.path[vehicle.current_edge_index - 1])].popleft()

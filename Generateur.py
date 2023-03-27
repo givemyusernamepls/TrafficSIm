@@ -40,9 +40,9 @@ class VehicleGenerator:
             for k in self.sim.roads:
                 if i in k.edges:
                     v_max.append(k.speed_lim + j)
-        l = random.choice([3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 7, 8])
+        l = random.choice([3, 4, 4, 4, 4, 5, 5, 5, 6, 8])
         t = random.uniform(0.9, 1.1)
-        if l > 6:
+        if l >= 6:
             a = random.uniform(2, 3)
         else:
             a = random.uniform(3, 4)
