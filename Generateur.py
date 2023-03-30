@@ -32,22 +32,31 @@ class VehicleGenerator:
         e = random.choice(ends)
         path = []
         v_max = []
+
         pfad = nx.dijkstra_path(self.graph, s, e, weight = 'weight')
         for i in range(len(pfad) - 1):
             for k in self.graph.out_edges(nbunch = pfad[i], data = 'weight'):
                 if k[1] == pfad[i + 1]:
                     path.append(k)
-        j = random.uniform(-0.2, 0.2)
-        l = random.choice([3, 4, 4, 4, 4, 5, 5, 5, 6, 8])
+
+        l = random.choice([3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 8, 10, 14])
         t = random.uniform(0.8, 1.2)
+
+        if l > 6:
+            a = random.uniform(2, 3)
+            j = random.uniform(-0.3, 0.05)
+        elif l == 6:
+            a = random.uniform(2.5, 3.5)
+            j = random.uniform(-0.2, 0.2)
+        else:
+            a = random.uniform(3, 5)
+            j = random.uniform(-0.2, 0.3)
+
         for i in path:
             for k in self.sim.roads:
                 if i in k.edges:
                     v_max.append(k.speed_lim + k.speed_lim * j)
-        if l >= 6:
-            a = random.uniform(2, 3)
-        else:
-            a = random.uniform(3, 4)
+
         return Auto(self.graph, self.sim, {"path": path, "v_max": v_max, "l": l, "s0": l, "T": t, "a_max": a})
 
 

@@ -50,10 +50,10 @@ class Road:
         for i in range(len(self.edges)):
             n = len(self.vehicles[i])
             if n > 0:
-                self.vehicles[i][0].update(None, None, None, dt)
+                self.vehicles[i][0].update(None, dt)
                 for j in range(1, n):
                     lead = self.vehicles[i][j - 1]
-                    self.vehicles[i][j].update(lead, None, None, dt)
+                    self.vehicles[i][j].update(lead, dt)
 
                 if not self.traffic_signal[i] == None:
 

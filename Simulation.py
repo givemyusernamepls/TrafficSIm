@@ -70,27 +70,15 @@ class Simulation:
         for i in range(len(self.roads)):
             for j in range(len(self.roads[i].edges)):
                 for auto in self.roads[i].vehicles[j]:
-
                     if auto.v == 0:
                         stopped += 1
                 if len(self.roads[i].vehicles[j]) == 0:
                     continue
                 vehicle = self.roads[i].vehicles[j][0]
                 vehicles += 1
-                if self.roads[i].length[j] - vehicle.x <= vehicle.v:
-                    if not vehicle.current_edge_index + 1 == len(vehicle.path):
-                        r = 0
-                        e = 0
-                        for road in self.roads:
-                            if vehicle.path[vehicle.current_edge_index + 1] in road.edges:
-                                r = self.roads.index(road)
-                                e = self.roads[r].edges.index(vehicle.path[vehicle.current_edge_index + 1])
-                        if not len(self.roads[r].vehicles[e]) == 0:
-                            v = len(self.roads[r].vehicles[e])
-                            if self.roads[r].vehicles[e][v - 1].x <= vehicle.v * 0.5:
-                                vehicle.update(None, self.roads[r].vehicles[e][v - 1], self.roads[i].length[j], self.dt)
                 if self.roads[i].length[j] - vehicle.x <= vehicle.v * 2:
                     vehicle.kreuzung = True
+                    vehicle.auffahrunfall = True
                 if vehicle.x >= self.roads[i].length[j]:
                     vehicle.current_road_index += i
                     vehicle.current_edge_index = vehicle.path.index(self.roads[i].edges[j]) + 1
@@ -101,7 +89,7 @@ class Simulation:
                         self.vehicle_count += 1
                         continue
                     elif vehicle.path[vehicle.current_edge_index] in self.roads[i].edges:
-                        self.roads[vehicle.current_road_index].vehicles[self.roads[i].edges.index(vehicle.path[vehicle.current_edge_index])].append(new_vehicle)
+                        self.roads[i].vehicles[self.roads[i].edges.index(vehicle.path[vehicle.current_edge_index])].append(new_vehicle)
                         new_vehicle.unstop()
                         new_vehicle.unslow()
                     else:

@@ -10,10 +10,11 @@ sim = Simulation(I, {'stop_time': 0})
 sim.create_road(ort, strecken_H, H_speed_lim, 0)
 sim.create_road(ort, strecken_G, G_speed_lim, 1)
 sim.create_road(ort, strecken_K, K_speed_lim, 1)
+#sim.create_road(ort, strecken_Kreis, Kreis_speed_lim, 0)
 
 sim.create_signal([2])
 
-sim.create_gen(I, starts, ends, 500, {'vehicle_rate': 20})
+sim.create_gen(I, starts, ends, 50, {'vehicle_rate': 20})
 
 #sim.roads[1].vehicles[0].append(
 #    Auto(I, sim, {"path": [strecken_G[0], strecken_K[1]], "v_max": [G_speed_lim, K_speed_lim]})
