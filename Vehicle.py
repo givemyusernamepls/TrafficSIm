@@ -82,13 +82,25 @@ class Auto:
             delta_v = self.v - lead.v
 
             alpha = (self.s0 + max(0, self.T * self.v + delta_v * self.v / self.sqrt_ab)) / delta_x
+            c = 0
+            d = 0
+            for i in self.path:
+                c += 1
+            for i in lead.path:
+                d += 1
+            if c != (self.current_edge_index + 1):
+                if d != (lead.current_edge_index + 1):
+                    if lead.path[lead.current_edge_index + 1] == self.path[self.current_edge_index + 1]:
+                        self.slow(lead._v_max)
+                    else:
+                        self.unslow()
 
         # car in front on next street:
         if leadnext:
             delta_x = leadnext.x + len - self.x - leadnext.l
             delta_v = self.v - leadnext.v
 
-            alpha = (self.s0 + max(0, self.T * self.v + delta_v * self.v / self.sqrt_ab)) / delta_x
+            alpha = (self.s0 + max(0, self.T * self.v + (delta_v * self.v / self.sqrt_ab))) / delta_x
 
         self.a = self.a_max * (1 - (self.v / self._v_max) ** 4 - alpha ** 2)
 
