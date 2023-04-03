@@ -15,7 +15,6 @@ class Road:
         self.init_properties()
 
     def init_properties(self):
-
         self.nodes_x = {}
         self.nodes_y = {}
 
@@ -48,23 +47,27 @@ class Road:
 
     def update(self, dt):
         for i in range(len(self.edges)):
+            # check if vehicle has leading vehicle on same street:
             n = len(self.vehicles[i])
             if n > 0:
-                self.vehicles[i][0].update(None, dt)
+                self.vehicles[i][0].update(None, None, None, dt)
                 for j in range(1, n):
                     lead = self.vehicles[i][j - 1]
-                    self.vehicles[i][j].update(lead, dt)
+                    self.vehicles[i][j].update(lead, None, None, dt)
 
                 if not self.traffic_signal[i] == None:
 
+                    # unslow vehicle if traffic signal is green:
                     if self.traffic_signal_state(i):
                         self.vehicles[i][0].unstop()
                         for vehicle in self.vehicles[i]:
                             vehicle.unslow()
+
+                    # slow/stop vehicle if traffic signal is red:
                     else:
                         for k in range(len(self.traffic_signal[i].roads)):
                             if self.traffic_signal[i].roads[k] == self.edges[i]:
                                 if self.vehicles[i][0].x >= self.length[i] - self.traffic_signal[i].slow_distance[k]:
                                     self.vehicles[i][0].slow(self.traffic_signal[i].slow_factor * self.vehicles[i][0].v_max[self.vehicles[i][0].current_edge_index])
-                                if self.vehicles[i][0].x >= self.length[i] - self.traffic_signal[i].stop_distance[k]: # and self.vehicles[i][0].x <= self.length[i] - self.traffic_signal[i].stop_distance[k] / 2:
+                                if self.vehicles[i][0].x >= self.length[i] - self.traffic_signal[i].stop_distance[k] and self.vehicles[i][0].x <= self.length[i] - self.traffic_signal[i].stop_distance[k] / 2:
                                     self.vehicles[i][0].stop()

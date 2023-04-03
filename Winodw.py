@@ -257,8 +257,6 @@ class Window:
                             sin=road.angle_sin[i]
                         )
 
-                    # TODO: Draw road arrow
-
     def draw_vehicle(self, vehicle, road):
         for i in range(len(road.edges)):
             for vehicle in road.vehicles[i]:

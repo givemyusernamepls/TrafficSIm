@@ -7,6 +7,7 @@ class Auto:
         self.sim = sim
         self.set_default_config()
 
+        # possibility to edit default config:
         for attr, val in config.items():
             setattr(self, attr, val)
 
@@ -28,7 +29,6 @@ class Auto:
         self.a = 0
         self.stopped = False
         self.kreuzung = False
-        self.auffahrunfall = False
 
     def init_properties(self):
         self.sqrt_ab = 2*np.sqrt(self.a_max*self.b_max)
@@ -36,10 +36,13 @@ class Auto:
         self.v = self.v_max[self.current_edge_index]
 
     def vorfahrt(self):
+        # find all incoming streets to the intersect the street currently driving on leads to:
         for t in self.graph.in_edges(nbunch = self.path[self.current_edge_index][1], data = 'weight'):
+            # find corresponding road and set index:
             for i in range(len(self.sim.roads)):
                 if self.path[self.current_edge_index] in self.sim.roads[i].edges:
                     k = i
+            # check if has to give way:
             for i in self.sim.roads:
                 if self.sim.roads[k].prio < i.prio:
                     continue
@@ -47,10 +50,12 @@ class Auto:
                     continue
                 elif self.sim.roads[k].prio == i.prio:
                     if t in i.edges:
+                        # if streets are on the same road set giving way priority to lower index in given road:
                         if not (t[0], t[1]) == (self.path[self.current_edge_index + 1][1], self.path[self.current_edge_index + 1][0]):
                             if i.edges.index(t) < i.edges.index(i.edges[self.current_edge_index]):
                                 continue
                             else:
+                # use dynamic braking equation to slow sown:
                                 for car in i.vehicles[i.edges.index(t)]:
                                     if i.length[i.edges.index(t)] - car.x <= car.v * 2:
                                         self.a = -self.b_max * self.v / self._v_max - 0.2
@@ -59,39 +64,39 @@ class Auto:
                         if i.length[i.edges.index(t)] - car.x <= car.v * 2:
                             self.a = -self.b_max * self.v / self._v_max - 0.2
 
-    def Achtung(self):
-        if len(self.path) > self.current_edge_index + 1:
-            h = self.path[self.current_edge_index + 1]
-            for i in self.sim.roads:
-                if h in i.edges:
-                    for car in i.vehicles[i.edges.index(h)]:
-                        if car.x + car.l/2 + self.s0 < self.v * 2:
-                            self.a = -self.b_max * self.v / self._v_max - 0.2
-
-
-    def update(self, lead, dt):
+    def update(self, lead, leadnext, len, dt):
+        # when encountering negative speeds, set speed to 0:
         if self.v + self.a * dt < 0:
             self.x -= 1 / 2 * self.v * self.v / self.a
             self.v = 0
         else:
+            # use basic movement equation:
             self.v += self.a * dt
             self.x += self.v * dt + self.a * dt * dt / 2
 
         alpha = 0
+        # if has a car in front implement IDM for leading car:
+        # car in front on same street:
         if lead:
             delta_x = lead.x - self.x - lead.l
             delta_v = self.v - lead.v
 
             alpha = (self.s0 + max(0, self.T * self.v + delta_v * self.v / self.sqrt_ab)) / delta_x
 
+        # car in front on next street:
+        if leadnext:
+            delta_x = leadnext.x + len - self.x - leadnext.l
+            delta_v = self.v - leadnext.v
+
+            alpha = (self.s0 + max(0, self.T * self.v + delta_v * self.v / self.sqrt_ab)) / delta_x
+
         self.a = self.a_max * (1 - (self.v / self._v_max) ** 4 - alpha ** 2)
 
+        # stop car:
         if self.stopped:
-            self.a = -self.b_max * self.v / self._v_max - 0.1337
+            self.a = -self.b_max * self.v / self._v_max - 0.2
 
-        if self.auffahrunfall:
-            self.Achtung()
-
+        # start check if has to give way:
         if self.kreuzung:
             self.vorfahrt()
 

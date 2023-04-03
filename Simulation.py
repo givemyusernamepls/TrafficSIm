@@ -10,6 +10,7 @@ class Simulation:
         self.graph = graph
         self.set_default_config()
 
+        # possibility to edit default config:
         for attr, val in config.items():
             setattr(self, attr, val)
 
@@ -34,6 +35,7 @@ class Simulation:
 
     def create_signal(self, nodes, config={}):
         for i in nodes:
+            # list streets for each traffic signal:
             roads = [e for e in self.graph.in_edges(nbunch = i, data = 'weight')]
             num = []
             prio = []
@@ -48,6 +50,7 @@ class Simulation:
                             num.append(1)
                         else:
                             num.append(0)
+            # create traffic signal with above set properties:
             sig = TrafficSignal(num, self, roads, config)
             self.traffic_signals.append(sig)
 
@@ -69,16 +72,30 @@ class Simulation:
         vehicles = 0
         for i in range(len(self.roads)):
             for j in range(len(self.roads[i].edges)):
+                # count topped vehicles:
                 for auto in self.roads[i].vehicles[j]:
                     if auto.v == 0:
                         stopped += 1
+                # update and count first vehicle on each street:
                 if len(self.roads[i].vehicles[j]) == 0:
                     continue
                 vehicle = self.roads[i].vehicles[j][0]
                 vehicles += 1
+                # if vehicle is in close proximity of intersect set lead to first car on next street and activate giving way:
                 if self.roads[i].length[j] - vehicle.x <= vehicle.v * 2:
                     vehicle.kreuzung = True
-                    vehicle.auffahrunfall = True
+                    if not vehicle.current_edge_index + 1 == len(vehicle.path):
+                        r = 0
+                        e = 0
+                        for road in self.roads:
+                            if vehicle.path[vehicle.current_edge_index + 1] in road.edges:
+                                r = self.roads.index(road)
+                                e = self.roads[r].edges.index(vehicle.path[vehicle.current_edge_index + 1])
+                        if not len(self.roads[r].vehicles[e]) == 0:
+                            v = len(self.roads[r].vehicles[e])
+                            if self.roads[r].vehicles[e][v - 1].x <= vehicle.v * 0.5:
+                                vehicle.update(None, self.roads[r].vehicles[e][v - 1], self.roads[i].length[j], self.dt)
+                # check if vehicle has exceeded street length and if so, add to next street and remove from current one:
                 if vehicle.x >= self.roads[i].length[j]:
                     vehicle.current_road_index += i
                     vehicle.current_edge_index = vehicle.path.index(self.roads[i].edges[j]) + 1
@@ -100,6 +117,8 @@ class Simulation:
                                 new_vehicle.unstop()
                                 new_vehicle.unslow()
                     self.roads[i].vehicles[j].popleft()
+
+        # stopping simulation after time/vehicle count parameter and print list with amount of stopped vehicles per time step:
 
         #if self.t >= self.stop_time and self.stop_time != 0:
         #    print(self.vehicle_count)

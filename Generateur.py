@@ -13,6 +13,7 @@ class VehicleGenerator:
 
         self.set_default_config()
 
+        # possibility to edit default config:
         for attr, val in config.items():
             setattr(self, attr, val)
 
@@ -27,18 +28,21 @@ class VehicleGenerator:
         self.upcoming_vehicle = self.generate_vehicle()
 
     def generate_vehicle(self):
+        # set start end end points for next vehicle:
         s = random.choice(self.starts)
         ends = [i for i in self.ends if i != s]
         e = random.choice(ends)
         path = []
         v_max = []
 
+        # find path for given start and endpoints:
         pfad = nx.dijkstra_path(self.graph, s, e, weight = 'weight')
         for i in range(len(pfad) - 1):
             for k in self.graph.out_edges(nbunch = pfad[i], data = 'weight'):
                 if k[1] == pfad[i + 1]:
                     path.append(k)
 
+        # randomly set vehicle config:
         l = random.choice([3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 8, 10, 14])
         t = random.uniform(0.8, 1.2)
 
@@ -61,12 +65,16 @@ class VehicleGenerator:
 
 
     def update(self):
+        # add vehicles:
+        # generate vehicle if enough time has elapsed:
         if self.sim.t - self.last_added_time >= 60 / self.vehicle_rate:
             for i in range(len(self.sim.roads)):
                 if self.upcoming_vehicle.path[0] in self.sim.roads[i].edges:
                     road = self.sim.roads[i].edges.index(self.upcoming_vehicle.path[0])
+                    # check if there is enough space on the street to add vehicle:
                     if len(self.sim.roads[i].vehicles[road]) == 0 or self.sim.roads[i].vehicles[road][-1].x > self.upcoming_vehicle.s0 + self.upcoming_vehicle.l:
                         self.upcoming_vehicle.time_added = self.sim.t
+                        # if given maximum vehicle count, check if next vehicle would exceed that limit and add vehicle:
                         if self.max_car == None:
                             self.sim.roads[i].vehicles[road].append(self.upcoming_vehicle)
                             self.vehicle_num += 1
