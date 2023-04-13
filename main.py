@@ -5,7 +5,7 @@ from Simulation import *
 from Map import *
 
 # create simulation:
-sim = Simulation(I, {'stop_time': 0})
+sim = Simulation(I, {'stop_time': 3600})
 
 # add roads (subgraphs) to simulation:
 sim.create_road(ort, strecken_R_50, lim_50, 0)
@@ -25,11 +25,11 @@ sim.create_signal(['Y2', 'O2', 'O3', 'O5', 'G10', 'O6', 'R1', 'R2', 'R3', 'R4', 
                    'G46', 'Y24', 'G36', 'Y32', 'Y30', 'Y28', 'Y26', 'G49', 'R9', 'O25'])
 
 # create vehicle generator:
-sim.create_gen(I, starts, ends, 5, {'vehicle_rate': 200})
+sim.create_gen(I, starts, ends, None, {'vehicle_rate': 200})
 
 # manually add vehicles:
 
 
 # create and start visual simulation:
 win = Window(sim, {'zoom': 0.35, 'offset': (-1700, 1270)})
-win.run(steps_per_update=60)
+win.run(steps_per_update=600)

@@ -56,16 +56,26 @@ class Auto:
                     continue
                 elif self.sim.roads[k].prio == i.prio:
                     if t in i.edges:
-                        # if streets are on the same road set giving way priority to lower index in given road:
-                        if c != (self.current_edge_index + 1):
-                            if not (t[0], t[1]) == (self.path[self.current_edge_index + 1][1], self.path[self.current_edge_index + 1][0]):
-                                if i.edges.index(t) < i.edges.index(i.edges[self.current_edge_index]):
+                        if i == self.sim.roads[k]:
+                            if c != (self.current_edge_index + 1):
+                                # if streets are on the same road set giving way priority to lower index in given road:
+                                if not (t[0], t[1]) == (self.path[self.current_edge_index + 1][1], self.path[self.current_edge_index + 1][0]):
+                                    if i.edges.index(t) < i.edges.index(self.path[self.current_edge_index]):
+                                        continue
+                                    else:
+                                        # use dynamic braking equation to slow down:
+                                        for car in i.vehicles[i.edges.index(t)]:
+                                            if i.length[i.edges.index(t)] - car.x <= car.v * 2:
+                                                self.a = -self.b_max * self.v / self._v_max - 0.2
+                            else:
+                                if i.speed_lim < self.sim.roads[k].speed_lim:
                                     continue
                                 else:
-                # use dynamic braking equation to slow down:
+                                    # use dynamic braking equation to slow down:
                                     for car in i.vehicles[i.edges.index(t)]:
                                         if i.length[i.edges.index(t)] - car.x <= car.v * 2:
                                             self.a = -self.b_max * self.v / self._v_max - 0.2
+                # use dynamic braking equation to slow down:
                 elif t in i.edges:
                     for car in i.vehicles[i.edges.index(t)]:
                         if i.length[i.edges.index(t)] - car.x <= car.v * 2:

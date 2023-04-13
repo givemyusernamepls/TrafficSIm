@@ -259,6 +259,7 @@ class Window:
 
     def draw_vehicle(self, vehicle, road):
         for i in range(len(road.edges)):
+            r = 0
             for vehicle in road.vehicles[i]:
                 l, h = vehicle.l, 2
                 sin, cos = road.angle_sin[i], road.angle_cos[i]
@@ -272,6 +273,7 @@ class Window:
 
 
                 self.rotated_box((x, y), (l, h), cos=cos, sin=sin, centered=True, color=color_1)
+
 
     def draw_vehicles(self):
         for road in self.sim.roads:

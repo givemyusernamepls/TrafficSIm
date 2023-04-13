@@ -43,7 +43,7 @@ class VehicleGenerator:
                     path.append(k)
 
         # randomly set vehicle config:
-        l = random.choice([3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 8, 10, 14])
+        l = random.choice([3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 12])
         t = random.uniform(0.8, 1.2)
 
         if l > 6:

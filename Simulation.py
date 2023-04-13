@@ -58,6 +58,47 @@ class Simulation:
         gen = VehicleGenerator(graph, self, startpoints, endpoints, max_car, config)
         self.generators.append(gen)
 
+    def time(self, stopped):
+        if self.t >= self.stop_time and self.stop_time != 0:
+            print(self.vehicle_count)
+            liste_stoped = []
+            c = 0
+            for i in range(len(self.stop_per_sec)):
+                c += self.stop_per_sec[i]
+                if i > 1 and i % 60 == 0:
+                    c /= 60
+                liste_stoped.append(c)
+                c = 0
+            print(liste_stoped)
+            ABBRUCH()
+
+        else:
+            self.stop_per_sec.append(stopped)
+            self.stopped = 0
+            self.t += self.dt
+            self.frame_count += 1
+
+    def num(self, stopped):
+        if self.t >= 10:
+            if vehicles == 0:
+                print(self.t)
+                liste_stoped = []
+                c = 0
+                for i in range(len(self.stop_per_sec)):
+                    c += self.stop_per_sec[i]
+                    if i > 1 and i % 60 == 0:
+                        c /= 60
+                        liste_stoped.append(c)
+                        c = 0
+                print(liste_stoped)
+                ABBRUCH()
+
+            else:
+                self.stop_per_sec.append(stopped)
+                self.stopped = 0
+                self.t += self.dt
+                self.frame_count += 1
+
     def update(self):
         stopped = 0
         for road in self.roads:
@@ -119,45 +160,9 @@ class Simulation:
                     self.roads[i].vehicles[j].popleft()
 
         # stopping simulation after time/vehicle count parameter and print list with amount of stopped vehicles per time step:
+        self.time(stopped)
 
-        #if self.t >= self.stop_time and self.stop_time != 0:
-        #    print(self.vehicle_count)
-        #    liste_stoped = []
-        #                 c = 0
-        #                 for i in range(len(self.stop_per_sec)):
-        #                     c += self.stop_per_sec[i]
-        #                     if i > 1 and i % 60 == 0:
-        #                         c /= 60
-        #                         liste_stoped.append(c)
-        #                         c = 0
-        #                 print(liste_stoped)
-        #    ABBRUCH()
-
-        if self.t >= 10:
-            if vehicles == 0:
-                print(self.t)
-                liste_stoped = []
-                c = 0
-                for i in range(len(self.stop_per_sec)):
-                    c += self.stop_per_sec[i]
-                    if i > 1 and i % 60 == 0:
-                        c /= 60
-                        liste_stoped.append(c)
-                        c = 0
-                print(liste_stoped)
-                ABBRUCH()
-
-            else:
-                self.stop_per_sec.append(stopped)
-                self.stopped = 0
-                self.t += self.dt
-                self.frame_count += 1
-
-        else:
-            self.stop_per_sec.append(stopped)
-            self.stopped = 0
-            self.t += self.dt
-            self.frame_count += 1
+        # self.num(stopped)
 
     def run(self, steps):
         for _ in range(steps):
