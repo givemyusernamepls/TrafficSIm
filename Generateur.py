@@ -1,7 +1,7 @@
 import networkx as nx
 import random
 from Vehicle import Auto
-from numpy.random import randint
+import numpy as np
 
 class VehicleGenerator:
     def __init__(self, graph, sim, startpoints, endpoints, max_car, config={}):
@@ -32,15 +32,15 @@ class VehicleGenerator:
         s = random.choice(self.starts)
         ends = [i for i in self.ends if i != s]
         e = random.choice(ends)
-        path = []
-        v_max = []
+        path_1 = []
+        v_max_1 = []
 
         # find path for given start and endpoints:
         pfad = nx.dijkstra_path(self.graph, s, e, weight = 'weight')
         for i in range(len(pfad) - 1):
             for k in self.graph.out_edges(nbunch = pfad[i], data = 'weight'):
                 if k[1] == pfad[i + 1]:
-                    path.append(k)
+                    path_1.append(k)
 
         # randomly set vehicle config:
         l = random.choice([3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 12])
@@ -56,12 +56,12 @@ class VehicleGenerator:
             a = random.uniform(3, 5)
             j = random.uniform(-0.2, 0.3)
 
-        for i in path:
+        for i in path_1:
             for k in self.sim.roads:
                 if i in k.edges:
-                    v_max.append(k.speed_lim + k.speed_lim * j)
+                    v_max_1.append(k.speed_lim + k.speed_lim * j)
 
-        return Auto(self.graph, self.sim, {"path": path, "v_max": v_max, "l": l, "s0": l, "T": t, "a_max": a})
+        return Auto(self.graph, self.sim, {"path": path_1, "v_max": v_max_1, "l": l, "s0": l, "T": t, "a_max": a})
 
 
     def update(self):
