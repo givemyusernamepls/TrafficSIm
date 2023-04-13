@@ -82,7 +82,7 @@ class Simulation:
                 vehicle = self.roads[i].vehicles[j][0]
                 vehicles += 1
                 # if vehicle is in close proximity of intersect set lead to first car on next street and activate giving way:
-                if self.roads[i].length[j] - vehicle.x <= vehicle.v * 2:
+                if self.roads[i].length[j] - vehicle.x <= vehicle.v * 3:
                     vehicle.kreuzung = True
                     if not vehicle.current_edge_index + 1 == len(vehicle.path):
                         r = 0
@@ -122,13 +122,29 @@ class Simulation:
 
         #if self.t >= self.stop_time and self.stop_time != 0:
         #    print(self.vehicle_count)
-        #    print(self.stop_per_sec)
+        #    liste_stoped = []
+        #                 c = 0
+        #                 for i in range(len(self.stop_per_sec)):
+        #                     c += self.stop_per_sec[i]
+        #                     if i > 1 and i % 60 == 0:
+        #                         c /= 60
+        #                         liste_stoped.append(c)
+        #                         c = 0
+        #                 print(liste_stoped)
         #    ABBRUCH()
 
         if self.t >= 10:
             if vehicles == 0:
                 print(self.t)
-                print(self.stop_per_sec)
+                liste_stoped = []
+                c = 0
+                for i in range(len(self.stop_per_sec)):
+                    c += self.stop_per_sec[i]
+                    if i > 1 and i % 60 == 0:
+                        c /= 60
+                        liste_stoped.append(c)
+                        c = 0
+                print(liste_stoped)
                 ABBRUCH()
 
             else:

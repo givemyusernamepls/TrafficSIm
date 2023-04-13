@@ -36,6 +36,12 @@ class Auto:
         self.v = self.v_max[self.current_edge_index]
 
     def vorfahrt(self):
+        c = 0
+        for i in self.v_max:
+            c += 1
+        if c != (self.current_edge_index + 1):
+            if self.v_max[self.current_edge_index + 1] < self.v_max[self.current_edge_index]:
+                self.slow(self.v_max[self.current_edge_index + 1])
         # find all incoming streets to the intersect the street currently driving on leads to:
         for t in self.graph.in_edges(nbunch = self.path[self.current_edge_index][1], data = 'weight'):
             # find corresponding road and set index:
@@ -51,14 +57,15 @@ class Auto:
                 elif self.sim.roads[k].prio == i.prio:
                     if t in i.edges:
                         # if streets are on the same road set giving way priority to lower index in given road:
-                        if not (t[0], t[1]) == (self.path[self.current_edge_index + 1][1], self.path[self.current_edge_index + 1][0]):
-                            if i.edges.index(t) < i.edges.index(i.edges[self.current_edge_index]):
-                                continue
-                            else:
-                # use dynamic braking equation to slow sown:
-                                for car in i.vehicles[i.edges.index(t)]:
-                                    if i.length[i.edges.index(t)] - car.x <= car.v * 2:
-                                        self.a = -self.b_max * self.v / self._v_max - 0.2
+                        if c != (self.current_edge_index + 1):
+                            if not (t[0], t[1]) == (self.path[self.current_edge_index + 1][1], self.path[self.current_edge_index + 1][0]):
+                                if i.edges.index(t) < i.edges.index(i.edges[self.current_edge_index]):
+                                    continue
+                                else:
+                # use dynamic braking equation to slow down:
+                                    for car in i.vehicles[i.edges.index(t)]:
+                                        if i.length[i.edges.index(t)] - car.x <= car.v * 2:
+                                            self.a = -self.b_max * self.v / self._v_max - 0.2
                 elif t in i.edges:
                     for car in i.vehicles[i.edges.index(t)]:
                         if i.length[i.edges.index(t)] - car.x <= car.v * 2:
@@ -82,6 +89,7 @@ class Auto:
             delta_v = self.v - lead.v
 
             alpha = (self.s0 + max(0, self.T * self.v + delta_v * self.v / self.sqrt_ab)) / delta_x
+            # if following a car for longer, adapt their max speed:
             c = 0
             d = 0
             for i in self.path:
@@ -97,10 +105,12 @@ class Auto:
 
         # car in front on next street:
         if leadnext:
-            delta_x = leadnext.x + len - self.x - leadnext.l
-            delta_v = self.v - leadnext.v
+            # if car speed on next street is lower than maximum speed of self on current road, set it to lead car:
+            if leadnext.v < self.v_max[self.current_edge_index]:
+                delta_x = leadnext.x + len - self.x - leadnext.l
+                delta_v = self.v - leadnext.v
 
-            alpha = (self.s0 + max(0, self.T * self.v + (delta_v * self.v / self.sqrt_ab))) / delta_x
+                alpha = (self.s0 + max(0, self.T * self.v + (delta_v * self.v / self.sqrt_ab))) / delta_x
 
         self.a = self.a_max * (1 - (self.v / self._v_max) ** 4 - alpha ** 2)
 

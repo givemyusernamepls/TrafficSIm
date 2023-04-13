@@ -286,8 +286,8 @@ class Window:
                     for j in self.sim.roads:
                         if road in j.edges:
                             position = (
-                                j.nodes_x[road[1]] + np.sign(j.nodes_x[road[0]]) * 2.5,
-                                j.nodes_y[road[1]] + np.sign(j.nodes_y[road[0]]) * 2.5
+                                j.nodes_x[road[1]] + np.sign(j.nodes_x[road[0]]) * 1.5,
+                                j.nodes_y[road[1]] + np.sign(j.nodes_y[road[0]]) * 1.5
                             )
                             self.rotated_box(
                                 position,
