@@ -63,12 +63,15 @@ class Simulation:
             print(self.vehicle_count)
             liste_stoped = []
             c = 0
-            for i in range(len(self.stop_per_sec)):
-                c += self.stop_per_sec[i]
-                if i > 1 and i % 60 == 0:
-                    c /= 60
+            d = 0
+            for i in self.stop_per_sec:
+                c += i
+                d += 1
+                if d == 60:
+                    c /= d
                 liste_stoped.append(c)
                 c = 0
+                d = 0
             print(liste_stoped)
             ABBRUCH()
 
@@ -84,12 +87,15 @@ class Simulation:
                 print(self.t)
                 liste_stoped = []
                 c = 0
-                for i in range(len(self.stop_per_sec)):
-                    c += self.stop_per_sec[i]
-                    if i > 1 and i % 60 == 0:
-                        c /= 60
+                d = 0
+                for i in self.stop_per_sec:
+                    c += i
+                    d += 1
+                    if d == 60:
+                        c /= d
                         liste_stoped.append(c)
                         c = 0
+                        d = 0
                 print(liste_stoped)
                 ABBRUCH()
 
