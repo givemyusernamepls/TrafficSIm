@@ -21,7 +21,7 @@ class VehicleGenerator:
 
     def set_default_config(self):
         self.vehicle_rate = 20
-        self.last_added_time = 0
+        self.last_added_time = 0.00000000001
         self.vehicle_num = 1
 
     def init_properties(self):
@@ -67,24 +67,31 @@ class VehicleGenerator:
     def update(self):
         # add vehicles:
         # generate vehicle if enough time has elapsed:
-        if self.sim.t - self.last_added_time >= 60 / self.vehicle_rate:
-            for i in range(len(self.sim.roads)):
-                if self.upcoming_vehicle.path[0] in self.sim.roads[i].edges:
-                    road = self.sim.roads[i].edges.index(self.upcoming_vehicle.path[0])
-                    # check if there is enough space on the street to add vehicle:
-                    if len(self.sim.roads[i].vehicles[road]) == 0 or self.sim.roads[i].vehicles[road][-1].x > self.upcoming_vehicle.s0 + self.upcoming_vehicle.l:
-                        # if given maximum vehicle count, check if next vehicle would exceed that limit and add vehicle:
-                        if self.max_car == None:
-                            self.sim.roads[i].vehicles[road].append(self.upcoming_vehicle)
-                            print(self.sim.t)
-                            self.vehicle_num += 1
-                            self.last_added_time = self.sim.t
+        if self.sim.t - self.last_added_time + 0.000001 >= 60 / self.vehicle_rate:
+            added = False
+            while not added:
+                for i in range(len(self.sim.roads)):
+                    if self.upcoming_vehicle.path[0] in self.sim.roads[i].edges:
+                        road = self.sim.roads[i].edges.index(self.upcoming_vehicle.path[0])
+                        # check if there is enough space on the street to add vehicle:
+                        if len(self.sim.roads[i].vehicles[road]) == 0 or self.sim.roads[i].vehicles[road][-1].x > self.upcoming_vehicle.s0 + self.upcoming_vehicle.l:
+                            # if given maximum vehicle count, check if next vehicle would exceed that limit and add vehicle:
+                            if self.max_car == None:
+                                self.last_added_time = self.sim.t
+                                self.sim.roads[i].vehicles[road].append(self.upcoming_vehicle)
+                                print(self.sim.t)
+                                added = True
+                                self.vehicle_num += 1
+                                self.upcoming_vehicle = self.generate_vehicle()
+                                break
+                            elif self.vehicle_num <= self.max_car:
+                                self.last_added_time = self.sim.t
+                                self.sim.roads[i].vehicles[road].append(self.upcoming_vehicle)
+                                print(self.sim.t)
+                                added = True
+                                self.vehicle_num += 1
+                                self.upcoming_vehicle = self.generate_vehicle()
+                                break
+                        # generate new vehicle if there is not enough space on road:
+                        else:
                             self.upcoming_vehicle = self.generate_vehicle()
-                            break
-                        elif self.vehicle_num <= self.max_car:
-                            self.sim.roads[i].vehicles[road].append(self.upcoming_vehicle)
-                            print(self.sim.t)
-                            self.vehicle_num += 1
-                            self.last_added_time = self.sim.t
-                            self.upcoming_vehicle = self.generate_vehicle()
-                            break
