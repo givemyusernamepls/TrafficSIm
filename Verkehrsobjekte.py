@@ -1,5 +1,5 @@
 #Main- und Map-Code für die einzelnen Verkehrsobjekte
-"""
+
 #Kreuzung Main
 sim.create_road(ort, strecken_I, lim_30, 0)
 
@@ -30,9 +30,8 @@ I.add_weighted_edges_from(strecken_I)
 nx.set_node_attributes(I, ort, 'pos')
 starts = ['1', '3','4','5']
 ends = starts
-"""
 
-"""
+
 #Ampel Main
 sim.create_road(ort, strecken_B, lim_30, 0)
 sim.create_road(ort, strecken_A, lim_30, 1)
@@ -79,9 +78,8 @@ I = nx.compose(J,D)
 
 starts = ['1','3','4','5']
 ends = starts
-"""
 
-"""
+
 #Kreisel Main
 sim.create_road(ort, strecken_K, lim_30, 0)
 sim.create_road(ort, strecken_S, lim_30, 1)
@@ -123,4 +121,3 @@ I = nx.compose(K,S)
 
 starts = ['S1', 'S2', 'S3' ,'S4']
 ends = starts
-"""
