@@ -73,7 +73,7 @@ class Simulation:
             for i in self.stop_per_sec:
                 c += i
                 d += 1
-                if d == 10:
+                if d == 60:
                     c /= d
                     liste_stoped.append(c)
                     d = 0
@@ -106,7 +106,7 @@ class Simulation:
                 for i in self.stop_per_sec:
                     c += i
                     d += 1
-                    if d == 10:
+                    if d == 60:
                         c /= d
                         liste_stoped.append(c)
                         d = 0
@@ -140,7 +140,7 @@ class Simulation:
                 for auto in self.roads[i].vehicles[j]:
                     if auto.v == 0:
                         stopped += 1
-                        self.which_node[self.roads[i].edges[j][1]] += 1/10
+                        self.which_node[self.roads[i].edges[j][1]] += 1/60
 
                 # update and count first vehicle on each street:
                 if len(self.roads[i].vehicles[j]) == 0:
