@@ -93,3 +93,4 @@ class VehicleGenerator:
                         # generate new vehicle if there is not enough space on road:
                         else:
                             self.upcoming_vehicle = self.generate_vehicle()
+

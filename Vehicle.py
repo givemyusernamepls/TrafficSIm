@@ -148,3 +148,5 @@ class Auto:
         self._v_max = self.v_max[self.current_edge_index]
         self.kreuzung = True
 
+
+

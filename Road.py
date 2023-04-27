@@ -71,3 +71,4 @@ class Road:
                                     self.vehicles[i][0].slow(self.traffic_signal[i].slow_factor * self.vehicles[i][0].v_max[self.vehicles[i][0].current_edge_index])
                                 if self.vehicles[i][0].x >= self.length[i] - self.traffic_signal[i].stop_distance[k] and self.vehicles[i][0].x <= self.length[i] - self.traffic_signal[i].stop_distance[k] / 2:
                                     self.vehicles[i][0].stop()
+

@@ -322,3 +322,4 @@ class Window:
 
         # Draw status info
         self.draw_status()
+

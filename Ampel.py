@@ -40,3 +40,5 @@ class TrafficSignal:
         cycle_length = 30
         k = (sim.t // cycle_length) % 2
         self.current_cycle_index = int(k)
+
+
