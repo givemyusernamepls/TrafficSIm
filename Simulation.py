@@ -85,7 +85,7 @@ class Simulation:
             plt.xlabel('Zeit in Sekunden')
             plt.plot(T, l, '-', color='k')
             plt.suptitle('Mittelwert der pro Sekunde stehenden Autos über die Zeit')
-            plt.title(f'Straßennetz mit r= 100 und insgesamt {self.vehicle_count} passierten Autos')
+            plt.title(f'Straßennetz mit r= 100 und insgesamt {self.vehicle_count} passierten Autos.')
             plt.ylim(-0.25, max(liste_stoped) + 10)
             plt.show()
             print(self.which_node)
@@ -111,9 +111,17 @@ class Simulation:
                         liste_stoped.append(c)
                         d = 0
                         c = 0
-                print(self.t)
+                l = liste_stoped
+                p = len(l)
+                T = np.arange(0, int(self.t), int(self.t) / p)
+                plt.ylabel('Durchschnittswert der pro Sekunde stehenden Autos')
+                plt.xlabel('Zeit in Sekunden')
+                plt.plot(T, l, '-', color='k')
+                plt.suptitle(f'Mittelwert der pro Sekunde stehenden Autos über einen Zeitraum von {self.t} Sekunden')
+                plt.title(f'Straßennetz mit r= 100 und insgesamt {self.vehicle_count} passierten Autos.')
+                plt.ylim(-0.25, max(liste_stoped) + 10)
+                plt.show()
                 print(self.which_node)
-                print(liste_stoped)
                 ABBRUCH()
 
             else:

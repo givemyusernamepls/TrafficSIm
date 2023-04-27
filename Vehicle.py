@@ -58,7 +58,7 @@ class Auto:
                     if t in i.edges:
                         if i == self.sim.roads[k]:
                             if c != (self.current_edge_index + 1):
-                                # if streets are on the same road set giving way priority to lower index in given road:
+                                # if streets are on the same road, set giving way priority to lower index in given road:
                                 if not (t[0], t[1]) == (self.path[self.current_edge_index + 1][1], self.path[self.current_edge_index + 1][0]):
                                     if i.edges.index(t) < i.edges.index(self.path[self.current_edge_index]):
                                         continue
