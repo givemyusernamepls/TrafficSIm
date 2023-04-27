@@ -3,9 +3,10 @@ matplotlib.use('TkAgg')
 from Winodw import *
 from Simulation import *
 from Map import *
+from Auswertung import *
 
 # create simulation:
-sim = Simulation(I, {'stop_time': 3600})
+sim = Simulation(I, ort, {'stop_time': 3600})
 
 # add roads (subgraphs) to simulation:
 sim.create_road(ort, strecken_R_50, lim_50, 0)
@@ -32,4 +33,4 @@ sim.create_gen(I, starts, ends, None, {'vehicle_rate': 200})
 
 # create and start visual simulation:
 win = Window(sim, {'zoom': 0.35, 'offset': (-1700, 1270)})
-win.run(steps_per_update=600)
+win.run(steps_per_update=100)

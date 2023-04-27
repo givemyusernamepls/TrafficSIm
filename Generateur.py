@@ -61,14 +61,14 @@ class VehicleGenerator:
                 if i in k.edges:
                     v_max_1.append(k.speed_lim + k.speed_lim * j)
 
-        return Auto(self.graph, self.sim, {"path": path_1, "v_max": v_max_1, "l": l, "s0": l, "T": t, "a_max": a})
+        return Auto(self.graph, self.sim, {"path": path_1, "v_max": v_max_1, "l": l, "T": t, "a_max": a})
 
 
     def update(self):
         # add vehicles:
         # generate vehicle if enough time has elapsed:
         if self.sim.t - self.last_added_time + 0.000001 >= 60 / self.vehicle_rate:
-            added = False
+            added = 0
             while not added:
                 for i in range(len(self.sim.roads)):
                     if self.upcoming_vehicle.path[0] in self.sim.roads[i].edges:
@@ -79,7 +79,6 @@ class VehicleGenerator:
                             if self.max_car == None:
                                 self.last_added_time = self.sim.t
                                 self.sim.roads[i].vehicles[road].append(self.upcoming_vehicle)
-                                print(self.sim.t)
                                 added = True
                                 self.vehicle_num += 1
                                 self.upcoming_vehicle = self.generate_vehicle()
@@ -87,7 +86,6 @@ class VehicleGenerator:
                             elif self.vehicle_num <= self.max_car:
                                 self.last_added_time = self.sim.t
                                 self.sim.roads[i].vehicles[road].append(self.upcoming_vehicle)
-                                print(self.sim.t)
                                 added = True
                                 self.vehicle_num += 1
                                 self.upcoming_vehicle = self.generate_vehicle()

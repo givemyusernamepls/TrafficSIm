@@ -2,12 +2,15 @@ import copy
 from Road import *
 from Ampel import *
 from Generateur import *
+import matplotlib.pyplot as plt
 from operator import attrgetter
 from copy import deepcopy
+import time
 
 class Simulation:
-    def __init__(self, graph, config={}):
+    def __init__(self, graph, nodes_dict, config={}):
         self.graph = graph
+        self.nodes_dict = nodes_dict
         self.set_default_config()
 
         # possibility to edit default config:
@@ -17,13 +20,17 @@ class Simulation:
     def set_default_config(self):
         self.t = 0.0
         self.frame_count = 0
-        self.dt = 1/60
+        self.dt = 1/10
         self.roads = []
         self.generators = []
         self.traffic_signals = []
         self.stop_per_sec = []
         self.stop_time = 0
         self.vehicle_count = 0
+        self.which_node = {}
+        for key in self.nodes_dict:
+            self.which_node[key] = 0
+        print(self.which_node)
 
     def create_road(self, nodes, edges, speed_lim, prio):
         road = Road(nodes, edges, speed_lim, prio)
@@ -60,19 +67,28 @@ class Simulation:
 
     def time(self, stopped):
         if self.t >= self.stop_time and self.stop_time != 0:
-            print(self.vehicle_count)
             liste_stoped = []
             c = 0
             d = 0
             for i in self.stop_per_sec:
                 c += i
                 d += 1
-                if d == 60:
+                if d == 10:
                     c /= d
-                liste_stoped.append(c)
-                c = 0
-                d = 0
-            print(liste_stoped)
+                    liste_stoped.append(c)
+                    d = 0
+                    c = 0
+            l = liste_stoped
+            p = len(l)
+            T = np.arange(0, int(self.t), int(self.t) / p)
+            plt.ylabel('Durchschnittswert der pro Sekunde stehenden Autos')
+            plt.xlabel('Zeit in Sekunden')
+            plt.plot(T, l, '-', color='k')
+            plt.suptitle('Mittelwert der pro Sekunde stehenden Autos über die Zeit')
+            plt.title(f'Straßennetz mit r= 100 und insgesamt {self.vehicle_count} passierten Autos')
+            plt.ylim(-0.25, max(liste_stoped) + 10)
+            plt.show()
+            print(self.which_node)
             ABBRUCH()
 
         else:
@@ -84,18 +100,19 @@ class Simulation:
     def num(self, stopped):
         if self.t >= 10:
             if vehicles == 0:
-                print(self.t)
                 liste_stoped = []
                 c = 0
                 d = 0
                 for i in self.stop_per_sec:
                     c += i
                     d += 1
-                    if d == 60:
+                    if d == 10:
                         c /= d
                         liste_stoped.append(c)
-                        c = 0
                         d = 0
+                        c = 0
+                print(self.t)
+                print(self.which_node)
                 print(liste_stoped)
                 ABBRUCH()
 
@@ -123,6 +140,8 @@ class Simulation:
                 for auto in self.roads[i].vehicles[j]:
                     if auto.v == 0:
                         stopped += 1
+                        self.which_node[self.roads[i].edges[j][1]] += 1/10
+
                 # update and count first vehicle on each street:
                 if len(self.roads[i].vehicles[j]) == 0:
                     continue
@@ -164,7 +183,6 @@ class Simulation:
                                 new_vehicle.unstop()
                                 new_vehicle.unslow()
                     self.roads[i].vehicles[j].popleft()
-
         # stopping simulation after time/vehicle count parameter and print list with amount of stopped vehicles per time step:
         self.time(stopped)
 

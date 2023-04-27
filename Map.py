@@ -43,6 +43,7 @@ for key in ort_1:
     value = ort_1[key]
     coord = (5 * value[0], -5 * value[1])
     ort[key] = coord
+print(ort)
 
 # list of edges with weight:
 strecken_R_50 = [('R1', 'R2', distance.euclidean(ort['R1'], ort['R2'])/lim_50), ('R2', 'R1', distance.euclidean(ort['R2'], ort['R1'])/lim_50), ('R3', 'R2', distance.euclidean(ort['R3'], ort['R2'])/lim_50), ('R2', 'R3', distance.euclidean(ort['R2'], ort['R3'])/lim_50), ('R3', 'R4', distance.euclidean(ort['R3'], ort['R4'])/lim_50), ('R4', 'R3', distance.euclidean(ort['R4'], ort['R3'])/lim_50), ('R5', 'R4', distance.euclidean(ort['R5'], ort['R4'])/lim_50), ('R4', 'R5', distance.euclidean(ort['R4'], ort['R5'])/lim_50),

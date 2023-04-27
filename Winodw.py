@@ -1,6 +1,8 @@
 import pygame
 from pygame import gfxdraw
 import numpy as np
+from Auswertung import *
+from Map import *
 
 class Window:
     def __init__(self, sim, config={}):
@@ -256,7 +258,6 @@ class Window:
                             cos=road.angle_cos[i],
                             sin=road.angle_sin[i]
                         )
-
     def draw_vehicle(self, vehicle, road):
         for i in range(len(road.edges)):
             r = 0
@@ -304,6 +305,7 @@ class Window:
 
         self.screen.blit(text_fps, (0, 0))
         self.screen.blit(text_frc, (100, 0))
+
 
     def draw(self):
         # Fill background
