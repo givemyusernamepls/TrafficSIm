@@ -138,7 +138,6 @@ class Auto:
 
     def unstop(self):
         self.stopped = False
-        self.kreuzung = True
 
     def slow(self, v):
         self._v_max = v
@@ -146,7 +145,6 @@ class Auto:
 
     def unslow(self):
         self._v_max = self.v_max[self.current_edge_index]
-        self.kreuzung = True
 
 
 
